@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "208894956727",
+    "firebase_url": "https://sos-m2.firebaseio.com",
+    "project_id": "sos-m2",
+    "storage_bucket": "sos-m2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:208894956727:android:09948891a0ebb6b6",
+        "android_client_info": {
+          "package_name": "com.example.arpit.sos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "208894956727-fl803tj7m862qjiplj5747anjchfgjkr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.arpit.sos",
+            "certificate_hash": "49fe85df57caf73885d8bd332b6d42f909b4765c"
+          }
+        },
+        {
+          "client_id": "208894956727-iv1c3acs6rereps3b93scu4bikh3h68b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4c9XfSugTV8svJsK4o8Ntrxz3n3F-b3s"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "208894956727-iv1c3acs6rereps3b93scu4bikh3h68b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
