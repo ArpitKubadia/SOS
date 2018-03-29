@@ -1,7 +1,17 @@
 package com.example.arpit.sos;
 
+import android.*;
+import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,14 +32,37 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SignIn extends AppCompatActivity {
     SignInButton btnGoogleSignIn;
+    String personName,personGivenName,personFamilyName,personEmail,personId;
+    double longitude,latitude;
+    Uri personPhoto;
     FirebaseAuth mAuth;
     FirebaseAuth.AuthStateListener mAuthListener;
     GoogleSignInClient mGoogleSignInClient;
-    private final static int RC_SIGN_IN=2;
+    DatabaseReference databaseReference;
 
+    private final static int RC_SIGN_IN=2;
+    private BroadcastReceiver broadcastReceiver;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(broadcastReceiver==null){
+            broadcastReceiver=new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                longitude=(Double)intent.getExtras().get("longitude");
+                Toast.makeText(SignIn.this,"hello"+String.valueOf(longitude),Toast.LENGTH_LONG).show();
+                latitude=(Double)intent.getExtras().get("latitude");
+                }
+            };
+            registerReceiver(broadcastReceiver,new IntentFilter("location_update"));
+        }
+    }
 
     @Override
     protected void onStart() {
@@ -44,12 +77,21 @@ public class SignIn extends AppCompatActivity {
         btnGoogleSignIn=findViewById(R.id.btnGoogleSignIn);
         mAuth = FirebaseAuth.getInstance();
 
+        databaseReference= FirebaseDatabase.getInstance().getReference();
+
+
         btnGoogleSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 signIn();
             }
+
+
         });
+
+        runtime_permissions();
+        Intent i=new Intent(SignIn.this,GPS_SERVICE.class);
+        startService(i);
 
         mAuthListener=new FirebaseAuth.AuthStateListener() {
             @Override
@@ -64,14 +106,42 @@ public class SignIn extends AppCompatActivity {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
+                .requestProfile()
                 .build();
 
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
+        if (acct != null) {
+             personName = acct.getDisplayName();
+             personGivenName = acct.getGivenName();
+             personFamilyName = acct.getFamilyName();
+             personEmail = acct.getEmail();
+             personId = acct.getId();
+             personPhoto = acct.getPhotoUrl();
+        }
+
+        //dataPushFunction();
+
+        Toast.makeText(SignIn.this,personName+"\n"+personFamilyName+"\n"+"latitude"+latitude+"\nlongitude"+longitude,Toast.LENGTH_LONG).show();
 
     }
 
+    /*private void dataPushFunction() {
+        DataPush dataPush=new DataPush(personName,personGivenName,personFamilyName,personEmail,personId,latitude,longitude,personPhoto);
+        FirebaseUser user=mAuth.getCurrentUser();
+        databaseReference.child(user.getUid()).setValue(dataPush);
+    }*/
+
+    private boolean runtime_permissions() {
+    if(Build.VERSION.SDK_INT>=23&& ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)!= PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)!=PackageManager.PERMISSION_GRANTED){
+            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},100);
+            return true;
+        }
+        else
+            return false;
+    }
 
 
     private void signIn() {
