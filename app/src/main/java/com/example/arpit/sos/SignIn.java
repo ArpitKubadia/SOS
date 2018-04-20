@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -26,6 +27,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 public class SignIn extends AppCompatActivity {
     SignInButton btnGoogleSignIn;
     FirebaseAuth mAuth;
+    Button email,signinemail;
     FirebaseAuth.AuthStateListener mAuthListener;
     GoogleSignInClient mGoogleSignInClient;
     private final static int RC_SIGN_IN=2;
@@ -37,13 +39,28 @@ public class SignIn extends AppCompatActivity {
         mAuth.addAuthStateListener(mAuthListener);
     }
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
         btnGoogleSignIn=findViewById(R.id.btnGoogleSignIn);
         mAuth = FirebaseAuth.getInstance();
-
+        email=findViewById(R.id.email);
+        email.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SignIn.this,SignInEmail.class));
+            }
+        });
+        signinemail=findViewById(R.id.signin);
+        signinemail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SignIn.this,LoginActivity.class));
+            }
+        });
         btnGoogleSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
