@@ -107,7 +107,7 @@ public class ProfileActivity extends AppCompatActivity {
             FirebaseUser user=firebaseAuth.getCurrentUser();
             databaseReference.child(user.getUid()).setValue(userInformation);
             Toast.makeText(this,"Information is saved in the database",Toast.LENGTH_LONG).show();
-
+            startActivity(new Intent(ProfileActivity.this,MapsActivity.class));
 
         }
 
