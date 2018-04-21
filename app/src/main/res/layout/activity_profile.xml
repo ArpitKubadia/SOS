@@ -7,11 +7,13 @@
     tools:context="com.example.arpit.sos.ProfileActivity">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true">
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
 
 
         <EditText
@@ -28,6 +30,14 @@
             android:layout_height="62dp"
             android:ems="10"
             android:hint="Enter Surname"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Enter Email"
             android:inputType="textPersonName" />
 
         <EditText
@@ -49,7 +59,7 @@
         <RadioGroup
             android:id="@+id/cpr"
             android:layout_width="match_parent"
-            android:layout_height="156dp" >
+            android:layout_height="156dp">
 
             <TextView
                 android:id="@+id/cpr_tv"
@@ -76,13 +86,14 @@
 
         <Button
             android:id="@+id/save"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:text="Save " />
 
         <Button
             android:id="@+id/buttonLogout"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="Logout" />

@@ -27,9 +27,11 @@ import com.google.firebase.auth.GoogleAuthProvider;
 public class SignIn extends AppCompatActivity {
     SignInButton btnGoogleSignIn;
     FirebaseAuth mAuth;
+    ProfileActivity profileActivity;
     Button email,signinemail;
     FirebaseAuth.AuthStateListener mAuthListener;
     GoogleSignInClient mGoogleSignInClient;
+    String personName,personFamilyName,personEmail;
     private final static int RC_SIGN_IN=2;
 
 
@@ -72,7 +74,11 @@ public class SignIn extends AppCompatActivity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if(firebaseAuth.getCurrentUser()!=null){
-                    startActivity(new Intent(SignIn.this,SaveData.class));
+                    Intent intent=new Intent(SignIn.this,ProfileActivity.class);
+                    intent.putExtra("name",personName);
+                    intent.putExtra("surname",personFamilyName);
+                    intent.putExtra("email",personEmail);
+                    startActivity(intent);
                 }
             }
         };
@@ -81,10 +87,20 @@ public class SignIn extends AppCompatActivity {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
+                .requestProfile()
                 .build();
 
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
+        if (acct != null) {
+            personName = acct.getGivenName();
+            personFamilyName = acct.getFamilyName();
+            personEmail = acct.getEmail();
+
+        }
+
 
 
     }
