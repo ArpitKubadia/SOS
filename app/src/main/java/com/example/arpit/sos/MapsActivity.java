@@ -44,8 +44,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        Bundle intent=getIntent().getExtras();
+        if(intent.getBoolean("SOS"))
+        {
+            Toast.makeText(this,"Notification Clicked",Toast.LENGTH_LONG).show();
+        }
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkLocationPermission();

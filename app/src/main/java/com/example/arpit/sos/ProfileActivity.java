@@ -99,7 +99,7 @@ public class ProfileActivity extends AppCompatActivity {
             String surnames=surname.getText().toString().trim();
             String emails=email.getText().toString().trim();
             int ages=Integer.parseInt(age.getText().toString());
-            float phones=Float.parseFloat(phone.getText().toString());
+            String phones=phone.getText().toString();
             rb=findViewById(cpr.getCheckedRadioButtonId());
             String knows_cpr=rb.getText().toString();
 
@@ -107,7 +107,7 @@ public class ProfileActivity extends AppCompatActivity {
             FirebaseUser user=firebaseAuth.getCurrentUser();
             databaseReference.child(user.getUid()).setValue(userInformation);
             Toast.makeText(this,"Information is saved in the database",Toast.LENGTH_LONG).show();
-            startActivity(new Intent(ProfileActivity.this,MapsActivity.class));
+            startActivity(new Intent(ProfileActivity.this,ContactPicker.class));
 
         }
 

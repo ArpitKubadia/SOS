@@ -7,9 +7,9 @@ package com.example.arpit.sos;
 public class UserInformation {
     public String name,surname,email,knows_cpr;
     public int age;
-    public float phone;
+    public String phone;
 
-    public UserInformation(String name, String surname,String email, String knows_cpr, int age, float phone) {
+    public UserInformation(String name, String surname,String email, String knows_cpr, int age, String phone) {
         this.name = name;
         this.surname = surname;
         this.email=email;

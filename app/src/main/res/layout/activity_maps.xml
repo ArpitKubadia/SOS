@@ -17,8 +17,8 @@
 
     <Button
         android:id="@+id/btnHospital"
-        android:layout_width="375dp"
-        android:layout_height="wrap_content"
+        android:layout_width="167dp"
+        android:layout_height="44dp"
         android:text="Nearby Hospitals"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/map"

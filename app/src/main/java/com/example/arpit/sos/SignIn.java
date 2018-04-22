@@ -1,7 +1,11 @@
 package com.example.arpit.sos;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -101,10 +105,29 @@ public class SignIn extends AppCompatActivity {
 
         }
 
-
+        addNotification();
 
     }
 
+    private void addNotification() {
+        NotificationCompat.Builder builder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.abc)
+                        .setContentTitle("In a HeartBeat")
+                        .setContentText("Click if EMERGENCY")
+                        .setOngoing(true);
+
+        Intent notificationIntent = new Intent(this, MapsActivity.class);
+        notificationIntent.putExtra("SOS",true);
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        builder.setContentIntent(contentIntent);
+
+        // Add as notification
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.notify(0, builder.build());
+
+    }
 
 
     private void signIn() {
