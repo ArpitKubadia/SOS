@@ -2,8 +2,10 @@ package com.example.arpit.sos;
 
 import android.app.ListActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -65,6 +67,7 @@ public class ContactPicker extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_picker);
+
         name1=findViewById(R.id.name1);
         name2=findViewById(R.id.name2);
         name3=findViewById(R.id.name3);
@@ -75,6 +78,23 @@ public class ContactPicker extends AppCompatActivity{
         save_contacts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //SP sp=new SP();
+                //final SharedPreferences myPreferences=sp.getSharedPreferences();
+
+                SharedPreferences myPreferences=PreferenceManager.getDefaultSharedPreferences(ContactPicker.this);
+                SharedPreferences.Editor myEditor=myPreferences.edit();
+                myEditor.putString("name1",name1.getText().toString());
+                myEditor.putString("name2",name2.getText().toString());
+                myEditor.putString("name3",name3.getText().toString());
+
+                myEditor.putLong("contact1",Long.parseLong(contact1.getText().toString()));
+                myEditor.putLong("contact2",Long.parseLong(contact2.getText().toString()));
+                myEditor.putLong("contact3",Long.parseLong(contact3.getText().toString()));
+
+                myEditor.commit();
+
+
                 startActivity(new Intent(ContactPicker.this,MapsActivity.class).putExtra("Not SOS",false));
 
             }

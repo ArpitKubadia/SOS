@@ -22,8 +22,8 @@ public class ProfileActivity extends AppCompatActivity {
         private FirebaseAuth firebaseAuth;
         private DatabaseReference databaseReference;
         EditText name,surname,age,phone,email;
-        RadioGroup cpr;
-        RadioButton rb;
+        //RadioGroup cpr;
+        //RadioButton rb;
         Button save;
         //view objects
         private TextView textViewUserEmail;
@@ -40,7 +40,7 @@ public class ProfileActivity extends AppCompatActivity {
             email=findViewById(R.id.email);
             age=findViewById(R.id.age);
             phone=findViewById(R.id.phone);
-            cpr=findViewById(R.id.cpr);
+            //cpr=findViewById(R.id.cpr);
             save=findViewById(R.id.save);
             save.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -100,10 +100,10 @@ public class ProfileActivity extends AppCompatActivity {
             String emails=email.getText().toString().trim();
             int ages=Integer.parseInt(age.getText().toString());
             String phones=phone.getText().toString();
-            rb=findViewById(cpr.getCheckedRadioButtonId());
-            String knows_cpr=rb.getText().toString();
+            //rb=findViewById(cpr.getCheckedRadioButtonId());
+            //String knows_cpr=rb.getText().toString();
 
-            UserInformation userInformation=new UserInformation(names,surnames,emails,knows_cpr,ages,phones);
+            UserInformation userInformation=new UserInformation(names,surnames,emails,ages,phones);
             FirebaseUser user=firebaseAuth.getCurrentUser();
             databaseReference.child(user.getUid()).setValue(userInformation);
             Toast.makeText(this,"Information is saved in the database",Toast.LENGTH_LONG).show();

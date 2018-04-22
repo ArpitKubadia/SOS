@@ -56,34 +56,6 @@
             android:hint="Enter Phone Number"
             android:inputType="textPersonName" />
 
-        <RadioGroup
-            android:id="@+id/cpr"
-            android:layout_width="match_parent"
-            android:layout_height="156dp">
-
-            <TextView
-                android:id="@+id/cpr_tv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Do you know CPR?"
-                android:textSize="24sp" />
-
-            <RadioButton
-                android:id="@+id/yes"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Yes" />
-
-            <RadioButton
-                android:id="@+id/no"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="No" />
-        </RadioGroup>
-
         <Button
             android:id="@+id/save"
             android:layout_width="wrap_content"

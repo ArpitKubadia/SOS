@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -29,7 +30,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 public class SignIn extends AppCompatActivity {
-    SignInButton btnGoogleSignIn;
+    ImageButton btnGoogleSignIn;
     FirebaseAuth mAuth;
     ProfileActivity profileActivity;
     Button email,signinemail;

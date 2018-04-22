@@ -5,15 +5,15 @@ package com.example.arpit.sos;
  */
 
 public class UserInformation {
-    public String name,surname,email,knows_cpr;
+    public String name,surname,email;
     public int age;
     public String phone;
 
-    public UserInformation(String name, String surname,String email, String knows_cpr, int age, String phone) {
+    public UserInformation(String name, String surname,String email,int age, String phone) {
         this.name = name;
         this.surname = surname;
         this.email=email;
-        this.knows_cpr = knows_cpr;
+        //this.knows_cpr = knows_cpr;
         this.age = age;
         this.phone = phone;
     }

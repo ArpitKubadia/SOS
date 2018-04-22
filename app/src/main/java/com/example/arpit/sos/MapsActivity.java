@@ -1,17 +1,25 @@
 package com.example.arpit.sos;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
+import android.net.Uri;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -28,6 +36,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -42,6 +54,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     Marker mCurrLocationMarker;
     LocationRequest mLocationRequest;
 
+    String message,message2;
+    //String name1,name2,name3;
+    Long contact1,contact2,contact3;
+    boolean notificationClicked=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -50,7 +66,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Bundle intent=getIntent().getExtras();
         if(intent.getBoolean("SOS"))
         {
-            Toast.makeText(this,"Notification Clicked",Toast.LENGTH_LONG).show();
+            //Toast.makeText(this,"Notification Clicked",Toast.LENGTH_LONG).show();
+            // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.map);
+            mapFragment.getMapAsync(this);
+
+            SharedPreferences myPreferences= PreferenceManager.getDefaultSharedPreferences(MapsActivity.this);
+
+            //name1=myPreferences.getString("name1","nope");
+            contact1=myPreferences.getLong("contact1",0);
+            contact2=myPreferences.getLong("contact2",0);
+            contact3=myPreferences.getLong("contact3",0);
+
+            notificationClicked=true;
+
+
+
+
+            //smsManager.sendTextMessage(contact1.toString(),null,"Wabba Lubba Dub Dub",null,null);*/
+
+            //Toast.makeText(this,name1,Toast.LENGTH_LONG).show();
+            //Toast.makeText(this,contact1.toString(),Toast.LENGTH_LONG).show();
+
         }
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -59,16 +97,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         //Check if Google Play Services Available or not
         if (!CheckGooglePlayServices()) {
-            Log.d("onCreate", "Finishing test case since Google Play Services are not available");
+            Log.d("onCreate", "Finishing test case since    Google Play Services are not available");
             finish();
         } else {
             Log.d("onCreate", "Google Play Services available.");
         }
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+
+
     }
 
     private boolean CheckGooglePlayServices() {
@@ -112,23 +148,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mMap.setMyLocationEnabled(true);
         }
 
-      /* // Button btnRestaurant = (Button) findViewById(R.id.btnRestaurant);
-        //btnRestaurant.setOnClickListener(new View.OnClickListener() {
-            String Restaurant = "restaurant";
-            //@Override
-            //public void onClick(View v) {
-                Log.d("onClick", "Button is Clicked");
-                mMap.clear();
-                String url = getUrl(latitude, longitude, Restaurant);
-                Object[] DataTransfer = new Object[2];
-                DataTransfer[0] = mMap;
-                DataTransfer[1] = url;
-                Log.d("onClick", url);
-                com.example.arpit.sos.GetNearbyPlacesData getNearbyPlacesData = new com.example.arpit.sos.GetNearbyPlacesData();
-                getNearbyPlacesData.execute(DataTransfer);
-                Toast.makeText(MapsActivity.this,"Nearby Restaurants", Toast.LENGTH_LONG).show();
-            //}
-        */
 
         Button btnHospital = (Button) findViewById(R.id.btnHospital);
         btnHospital.setOnClickListener(new View.OnClickListener() {
@@ -150,28 +169,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
-       /* Button btnSchool = (Button) findViewById(R.id.btnSchool);
-        btnSchool.setOnClickListener(new View.OnClickListener() {
-            String School = "school";
-            @Override
-            public void onClick(View v) {
-                Log.d("onClick", "Button is Clicked");
-                mMap.clear();
-                if (mCurrLocationMarker != null) {
-                    mCurrLocationMarker.remove();
-                }
-                String url = getUrl(latitude, longitude, School);
-                Object[] DataTransfer = new Object[2];
-                DataTransfer[0] = mMap;
-                DataTransfer[1] = url;
-                Log.d("onClick", url);
-                com.example.arpit.sos.GetNearbyPlacesData getNearbyPlacesData = new com.example.arpit.sos.GetNearbyPlacesData();
-                getNearbyPlacesData.execute(DataTransfer);
-                Toast.makeText(MapsActivity.this,"Nearby Schools", Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-*/
+
 
     protected synchronized void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -230,7 +228,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         markerOptions.title("Current Position");
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
         mCurrLocationMarker = mMap.addMarker(markerOptions);
+        if(notificationClicked==true)
+        {
+            message=getCompleteAddressString(latitude,longitude);
+            //message2="http://maps.googleapis.com/maps/api/geocode/json?latlng="+latitude+","+longitude+"&sensor=true";
+            message2="http://maps.google.com/maps?q=" + latitude + "," + longitude;
+            sendSMS(message,message2,contact1,contact2,contact3);
+            notificationClicked=false;
 
+        }
         //move map camera
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(17));
@@ -250,7 +256,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
-
+    public static final int MY_PERMISSIONS_REQUEST_SEND_SMS=55;
     public boolean checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(this,
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
@@ -282,6 +288,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    protected void sendSMS(String message,String message2,Long contact1,Long contact2,Long contact3){
+
+
+        if (ContextCompat.checkSelfPermission(this,
+                android.Manifest.permission.SEND_SMS)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    android.Manifest.permission.SEND_SMS)) {
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{android.Manifest.permission.SEND_SMS},
+                        MY_PERMISSIONS_REQUEST_SEND_SMS);
+            }
+
+        }
+
+        String sendThis="EMERGENCY. "+"I am in distress here: "+message;
+        String sendThis2="Follow me on this link "+message2;
+        SmsManager smsManager = SmsManager.getDefault();
+        smsManager.sendTextMessage("+91"+contact1,null,sendThis,null,null);
+        smsManager.sendTextMessage("+91"+contact1,null,sendThis2,null,null);
+
+        smsManager.sendTextMessage("+91"+contact2,null,sendThis,null,null);
+        smsManager.sendTextMessage("+91"+contact2,null,sendThis2,null,null);
+
+        smsManager.sendTextMessage("+91"+contact3,null,sendThis,null,null);
+        smsManager.sendTextMessage("+91"+contact3,null,sendThis2,null,null);
+
+
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
@@ -311,13 +348,53 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 return;
             }
 
+            case MY_PERMISSIONS_REQUEST_SEND_SMS: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //SmsManager smsManager = SmsManager.getDefault();
+                    //smsManager.sendTextMessage("+918888898018",null,"Wabba Lubba Dub Dub",null,null);
+                    Toast.makeText(getApplicationContext(), "SMS sent.",
+                            Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                            "SMS failed, please try again.", Toast.LENGTH_LONG).show();
+                    return;
+                }
+            }
             // other 'case' lines to check for other permissions this app might request.
             // You can add here other case statements according to your requirement.
         }
     }
 
+
+    private String getCompleteAddressString(double LATITUDE, double LONGITUDE) {
+        String strAdd = "";
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
+            if (addresses != null) {
+                Address returnedAddress = addresses.get(0);
+                StringBuilder strReturnedAddress = new StringBuilder("");
+
+                for (int i = 0; i <= returnedAddress.getMaxAddressLineIndex(); i++) {
+                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
+                }
+                strAdd = strReturnedAddress.toString();
+                Log.w("My Current location address", strReturnedAddress.toString());
+            } else {
+                Log.w("My Current location address", "No Address returned!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.w("My Current location address", "Cannot get Address!");
+        }
+        return strAdd;
+    }
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
+
+
+
 }
