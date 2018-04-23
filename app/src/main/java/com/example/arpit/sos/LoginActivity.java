@@ -105,7 +105,11 @@ public class LoginActivity extends AppCompatActivity {
                         if(task.isSuccessful()){
                             //start the profile activity
                             finish();
-                            startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                            startActivity(new Intent(getApplicationContext(), MapsActivity.class).putExtra("SOS",false));
+                        }
+                        else
+                        {
+                            Toast.makeText(LoginActivity.this,"WrongPassword",Toast.LENGTH_LONG).show();
                         }
                     }
                 });

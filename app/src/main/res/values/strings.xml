@@ -15,4 +15,6 @@
         completions."
     </string>
     <string name="title_activity_maps">Map</string>
+    <string name="openDrawer">Open Drawer </string>
+    <string name="closeDrawer">Close Drawer </string>
 </resources>

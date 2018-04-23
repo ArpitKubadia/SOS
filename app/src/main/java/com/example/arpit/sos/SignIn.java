@@ -33,7 +33,7 @@ public class SignIn extends AppCompatActivity {
     ImageButton btnGoogleSignIn;
     FirebaseAuth mAuth;
     ProfileActivity profileActivity;
-    Button email,signinemail;
+    Button email,signinemail,learnMore;
     FirebaseAuth.AuthStateListener mAuthListener;
     GoogleSignInClient mGoogleSignInClient;
     String personName,personFamilyName,personEmail;
@@ -74,12 +74,19 @@ public class SignIn extends AppCompatActivity {
                 signIn();
             }
         });
+        learnMore=findViewById(R.id.learnMore);
+        learnMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SignIn.this,LearnMore.class));
+            }
+        });
 
         mAuthListener=new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if(firebaseAuth.getCurrentUser()!=null){
-                    Intent intent=new Intent(SignIn.this,ProfileActivity.class);
+                    Intent intent=new Intent(SignIn.this,MapsActivity.class);
                     intent.putExtra("name",personName);
                     intent.putExtra("surname",personFamilyName);
                     intent.putExtra("email",personEmail);
@@ -113,7 +120,7 @@ public class SignIn extends AppCompatActivity {
     private void addNotification() {
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.abc)
+                        .setSmallIcon(R.drawable.finallogo)
                         .setContentTitle("In a HeartBeat")
                         .setContentText("Click if EMERGENCY")
                         .setOngoing(true);

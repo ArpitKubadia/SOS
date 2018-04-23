@@ -95,7 +95,7 @@ public class ContactPicker extends AppCompatActivity{
                 myEditor.commit();
 
 
-                startActivity(new Intent(ContactPicker.this,MapsActivity.class).putExtra("Not SOS",false));
+                startActivity(new Intent(ContactPicker.this,MapsActivity.class).putExtra("SOS",false));
 
             }
         });

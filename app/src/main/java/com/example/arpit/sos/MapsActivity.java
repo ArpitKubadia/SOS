@@ -11,14 +11,24 @@ import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.telephony.SmsManager;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -35,6 +45,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.IOException;
 import java.util.List;
@@ -53,9 +64,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     Location mLastLocation;
     Marker mCurrLocationMarker;
     LocationRequest mLocationRequest;
+    private FirebaseAuth firebaseAuth;
+
 
     String message,message2;
-    //String name1,name2,name3;
+    String name1,name2,name3;
     Long contact1,contact2,contact3;
     boolean notificationClicked=false;
     @Override
@@ -63,21 +76,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+
         Bundle intent=getIntent().getExtras();
-        if(intent.getBoolean("SOS"))
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        SharedPreferences myPreferences= PreferenceManager.getDefaultSharedPreferences(MapsActivity.this);
+
+        //name1=myPreferences.getString("name1","nope");
+        contact1=myPreferences.getLong("contact1",0);
+        contact2=myPreferences.getLong("contact2",0);
+        contact3=myPreferences.getLong("contact3",0);
+
+        if(intent.getBoolean("SOS")==true)
         {
             //Toast.makeText(this,"Notification Clicked",Toast.LENGTH_LONG).show();
             // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                    .findFragmentById(R.id.map);
-            mapFragment.getMapAsync(this);
-
-            SharedPreferences myPreferences= PreferenceManager.getDefaultSharedPreferences(MapsActivity.this);
-
-            //name1=myPreferences.getString("name1","nope");
-            contact1=myPreferences.getLong("contact1",0);
-            contact2=myPreferences.getLong("contact2",0);
-            contact3=myPreferences.getLong("contact3",0);
 
             notificationClicked=true;
 
@@ -90,6 +107,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             //Toast.makeText(this,contact1.toString(),Toast.LENGTH_LONG).show();
 
         }
+
+
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkLocationPermission();
@@ -106,6 +125,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     }
+
 
     private boolean CheckGooglePlayServices() {
         GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
@@ -234,7 +254,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             //message2="http://maps.googleapis.com/maps/api/geocode/json?latlng="+latitude+","+longitude+"&sensor=true";
             message2="http://maps.google.com/maps?q=" + latitude + "," + longitude;
             sendSMS(message,message2,contact1,contact2,contact3);
-            notificationClicked=false;
+           // notificationClicked=false;
 
         }
         //move map camera
@@ -253,7 +273,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-
+    @Override
+    public void onBackPressed() {
+        firebaseAuth.signOut();
+        startActivity(new Intent(MapsActivity.this,SignIn.class));
+        super.onBackPressed();
+    }
 
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     public static final int MY_PERMISSIONS_REQUEST_SEND_SMS=55;
@@ -307,6 +332,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String sendThis="EMERGENCY. "+"I am in distress here: "+message;
         String sendThis2="Follow me on this link "+message2;
         SmsManager smsManager = SmsManager.getDefault();
+
         smsManager.sendTextMessage("+91"+contact1,null,sendThis,null,null);
         smsManager.sendTextMessage("+91"+contact1,null,sendThis2,null,null);
 

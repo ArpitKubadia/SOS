@@ -88,14 +88,15 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="157dp"
+            android:layout_height="186dp"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
-            android:text="You know the difference early CPR and defibrillation can make in a Sudden Cardiac Arrest event. Fifty-seven percent of U.S. adults say they’ve had CPR training, and most would be willing to use CPR or an AED to help save a stranger’s life. Yet only 11% say they’ve used CPR in an actual emergency—that’s a number we can increase together."
+            android:lineSpacingExtra="5sp"
+            android:text="Know the where-abouts of your loved ones when they are in trouble\nReach the nearest hospital when there is an emergency\nA single heartbeat is all that matters\nJoin Us. Stay Safe"
             android:textAlignment="center"
             android:textColor="#fff"
-            android:textSize="15sp"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -119,7 +120,8 @@
             app:layout_constraintVertical_bias="1.0">
 
             <Button
-                android:layout_width="wrap_content"
+                android:id="@+id/learnMore"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:layout_marginBottom="8dp"
@@ -127,13 +129,14 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/buttonstyle2"
-                android:text="Learn More"
+                android:text="S.O.S"
                 android:textColor="#fff"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.13"
+                app:layout_constraintHorizontal_bias="0.117"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.518" />
 
             <Button
                 android:id="@+id/email"
@@ -148,9 +151,10 @@
                 android:textColor="#fff"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.866"
+                app:layout_constraintHorizontal_bias="0.958"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.518" />
         </android.support.constraint.ConstraintLayout>
 
     </android.support.constraint.ConstraintLayout>
@@ -184,10 +188,10 @@
             android:textColor="#fff"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.25"
+            app:layout_constraintHorizontal_bias="0.236"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.982" />
+            app:layout_constraintVertical_bias="0.928" />
 
         <ImageButton
             android:id="@+id/btnGoogleSignIn"
@@ -200,10 +204,10 @@
             android:background="#fff"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.739"
+            app:layout_constraintHorizontal_bias="0.742"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0"
+            app:layout_constraintVertical_bias="0.958"
             app:srcCompat="@drawable/google" />
     </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>
