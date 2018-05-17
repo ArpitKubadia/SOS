@@ -1,5 +1,5 @@
 # SOS
-## The final version of the project is in Ver2.0. Ignore Master Branch.
+## The final version of the project is in branch Ver2.0. Ignore Master Branch.
 
 SOS Beta version.
 
