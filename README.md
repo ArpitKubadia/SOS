@@ -1,4 +1,6 @@
 # SOS
+## The final version of the project is in Ver2.0. Ignore Master Branch.
+
 SOS Beta version.
 
 Sign Up with Google or Email.
