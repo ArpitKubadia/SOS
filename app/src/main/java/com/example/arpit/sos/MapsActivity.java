@@ -224,7 +224,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Log.d("getUrl", googlePlacesUrl.toString());
         return (googlePlacesUrl.toString());
     }
-
     @Override
     public void onConnectionSuspended(int i) {
 
