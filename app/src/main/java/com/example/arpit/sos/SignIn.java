@@ -1,9 +1,12 @@
 package com.example.arpit.sos;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -119,7 +122,7 @@ public class SignIn extends AppCompatActivity {
 
     private void addNotification() {
         NotificationCompat.Builder builder =
-                new NotificationCompat.Builder(this)
+                new NotificationCompat.Builder(this,"notify_001")
                         .setSmallIcon(R.drawable.finallogo)
                         .setContentTitle("In a HeartBeat")
                         .setContentText("Click if EMERGENCY")
@@ -133,6 +136,14 @@ public class SignIn extends AppCompatActivity {
 
         // Add as notification
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("notify_001",
+                    "Channel human readable title",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            manager.createNotificationChannel(channel);
+        }
+
         manager.notify(0, builder.build());
 
     }

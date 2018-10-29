@@ -253,6 +253,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             //message2="http://maps.googleapis.com/maps/api/geocode/json?latlng="+latitude+","+longitude+"&sensor=true";
             message2="http://maps.google.com/maps?q=" + latitude + "," + longitude;
             sendSMS(message,message2,contact1,contact2,contact3);
+            //sendSMS(message,message2,9664057472);
            // notificationClicked=false;
 
         }
@@ -340,6 +341,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         smsManager.sendTextMessage("+91"+contact3,null,sendThis,null,null);
         smsManager.sendTextMessage("+91"+contact3,null,sendThis2,null,null);
+
+
+        //smsManager.sendTextMessage("+919664057472",null,sendThis,null,null);
+        //smsManager.sendTextMessage("+919664057472",null,sendThis2,null,null);
 
 
     }

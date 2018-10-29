@@ -105,7 +105,9 @@ public class LoginActivity extends AppCompatActivity {
                         if(task.isSuccessful()){
                             //start the profile activity
                             finish();
-                            startActivity(new Intent(getApplicationContext(), MapsActivity.class).putExtra("SOS",false));
+                            startActivity(new Intent(getApplicationContext(),ContactPicker.class));
+
+                            //startActivity(new Intent(getApplicationContext(), MapsActivity.class).putExtra("SOS",false));
                         }
                         else
                         {
